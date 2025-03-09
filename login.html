@@ -34,6 +34,41 @@
         </form>
         <a href="recuperarSenha.html" class="recuperar-senha-link">Recuperar Senha</a> <!-- Link para a página de recuperação de senha -->
     </main>
-    <script src="scripts/scripts.js"></script>
+    <script>
+        // Função para fazer login
+        function fazerLogin(loginData) {
+            return fetch('http://localhost:3000/api/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(loginData)
+            })
+            .then(response => response.json());
+        }
+
+        // Event listener para o formulário de login
+        document.getElementById('loginForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const senha = document.getElementById('senha').value;
+
+            // Realiza o login
+            try {
+                const response = await fazerLogin({ email, senha });
+                if (response.message === 'Login realizado com sucesso!') {
+                    alert(response.message);
+                    console.log('Redirecionando para a página de perfil...');
+                    window.location.href = 'perfil.html'; // Redireciona para a página de perfil
+                } else {
+                    alert(response.message || 'Erro ao realizar login');
+                }
+            } catch (error) {
+                console.error('Erro ao fazer login:', error);
+                alert('Erro ao realizar login. Tente novamente mais tarde.');
+            }
+        });
+    </script>
 </body>
 </html>

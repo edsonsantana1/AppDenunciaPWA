@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfil</title>
     <link rel="stylesheet" href="styles/styles.css">
-    <!-- Adicionando o Manifesto e Ícones -->
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="android/mipmap-xxxhdpi/ic_launcher.png" type="image/png">
 </head>
@@ -22,18 +21,91 @@
     </header>
     <main>
         <h1>Perfil</h1>
-            <div class="card">
-                <h2>Bem-vindo!</h2>
-                <p>Instruções de uso do site...</p>
-                <div class="card-details">
-                    <p>Aqui estão mais detalhes sobre como usar o site...</p>
-                </div>
-                <button class="deleteButton"><img src="icons/Firefly gerar icone de x para um site futurista 39990.jpg" alt="Excluir"></button>
+        <div class="card">
+            <h2>Bem-vindo!</h2>
+            <p>Instruções de uso do site...</p>
+            <div class="card-details">
+                <p>Aqui estão mais detalhes sobre como usar o site...</p>
             </div>
-            <!-- Lista de denúncias do usuário -->
+            <button class="deleteButton">
+                <img src="icons/Firefly gerar icone de x para um site futurista 39990.jpg" alt="Excluir">
+            </button>
         </div>
+        <!-- Lista de denúncias do usuário -->
+        <div id="denunciasContainer"></div>
     </main>
     <button id="logoutButton">Sair</button>
-    <script src="scripts/scripts.js"></script>
+
+    <script>
+        // Função para obter as denúncias do usuário
+        function obterDenuncias() {
+            return fetch('http://localhost:3000/api/denuncias')
+                .then(response => response.json());
+        }
+
+        // Função para exibir as denúncias na página de perfil
+        function exibirDenuncias(denuncias) {
+            const container = document.getElementById('denunciasContainer');
+            container.innerHTML = ''; // Limpa o container
+
+            denuncias.forEach(denuncia => {
+                const denunciaElement = document.createElement('div');
+                denunciaElement.className = 'denuncia';
+                denunciaElement.innerHTML = `
+                    <h3>Denúncia #${denuncia.id}</h3>
+                    <p><strong>Mensagem:</strong> ${denuncia.mensagem}</p>
+                    <p><strong>CEP:</strong> ${denuncia.cep}</p>
+                    <p><strong>Rua:</strong> ${denuncia.rua}</p>
+                    <p><strong>Número:</strong> ${denuncia.numero}</p>
+                    <p><strong>Cidade:</strong> ${denuncia.cidade}</p>
+                    <p><strong>Estado:</strong> ${denuncia.estado}</p>
+                    <p><strong>Bairro:</strong> ${denuncia.bairro}</p>
+                    ${denuncia.arquivo ? `<p><strong>Arquivo:</strong> <a href="${denuncia.arquivo}" target="_blank">Ver arquivo</a></p>` : ''}
+                    <button class="deleteButton" data-id="${denuncia.id}">Excluir</button>
+                `;
+                container.appendChild(denunciaElement);
+            });
+
+            // Adiciona event listeners para os botões de excluir
+            document.querySelectorAll('.deleteButton').forEach(button => {
+                button.addEventListener('click', function() {
+                    const id = this.getAttribute('data-id');
+                    deletarDenuncia(id); // Chama a função de exclusão
+                });
+            });
+        }
+
+        // Função para deletar uma denúncia
+        function deletarDenuncia(id) {
+            fetch(`http://localhost:3000/api/denuncia/${id}`, {
+                method: 'DELETE',
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Denúncia excluída com sucesso!');
+                    obterDenuncias().then(exibirDenuncias); // Atualiza a lista de denúncias
+                } else {
+                    alert('Erro ao excluir a denúncia.');
+                }
+            })
+            .catch(error => {
+                console.error('Erro ao excluir denúncia:', error);
+                alert('Erro ao excluir a denúncia.');
+            });
+        }
+
+        // Função para fazer logout
+        document.getElementById('logoutButton').addEventListener('click', function() {
+            // Realizar logout (exemplo: remover token ou redirecionar)
+            alert('Você foi desconectado!');
+            window.location.href = 'index.html'; // Redireciona para a página inicial
+        });
+
+        // Ao carregar a página, obter e exibir as denúncias
+        window.onload = function() {
+            obterDenuncias().then(exibirDenuncias);
+        }
+    </script>
 </body>
 </html>

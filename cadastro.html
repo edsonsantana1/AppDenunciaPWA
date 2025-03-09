@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <!-- Adicionando o Manifesto e Ícones -->
     <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="android/mipmap-xxxhdpi/ic_launcher.png" type="image/png">
+   " type="image/png">
 </head>
 <body>
     <header>
@@ -45,6 +45,64 @@
             <button type="submit">Cadastrar</button>
         </form>
     </main>
-    <script src="scripts/scripts.js"></script>
+    <script>
+        // Função para fazer cadastro
+        function fazerCadastro(cadastroData) {
+            return fetch('http://localhost:3000/api/cadastro', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(cadastroData)
+            })
+            .then(response => response.json());
+        }
+
+        // Função para enviar denúncia
+        function enviarDenuncia(denuncia) {
+            return fetch('http://localhost:3000/api/denuncia', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(denuncia)
+            })
+            .then(response => response.json());
+        }
+
+        // Event listener para o formulário de cadastro
+        document.getElementById('cadastroForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const nome = document.getElementById('nome').value;
+            const email = document.getElementById('email').value;
+            const senha = document.getElementById('senha').value;
+            const confirmarSenha = document.getElementById('confirmarSenha').value;
+
+            if (senha !== confirmarSenha) {
+                alert('As senhas não coincidem.');
+            } else {
+                const response = await fazerCadastro({ nome, email, senha });
+                alert(response.message);
+
+                // Recupera a denúncia do localStorage
+                const denuncia = JSON.parse(localStorage.getItem('denuncia'));
+
+                if (denuncia) {
+                    // Envia a denúncia para o backend
+                    enviarDenuncia(denuncia)
+                        .then(data => {
+                            alert('Denúncia enviada com sucesso!');
+                            localStorage.removeItem('denuncia'); // Remove a denúncia do localStorage
+                            window.location.href = 'perfil.html'; // Redireciona para a página de perfil
+                        })
+                        .catch(error => {
+                            console.error('Erro ao enviar denúncia:', error);
+                        });
+                } else {
+                    window.location.href = 'login.html'; // Redireciona para a página de login
+                }
+            }
+        });
+    </script>
 </body>
 </html>

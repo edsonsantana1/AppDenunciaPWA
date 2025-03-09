@@ -5,9 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Denúncia.com</title>
     <link rel="stylesheet" href="styles/styles.css">
-    <!-- Importando a fonte Roboto do Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <!-- Adicionando o Manifesto e Ícones -->
     <link rel="manifest" href="manifest.json">
     <link rel="icon" href="android/mipmap-xxxhdpi/ic_launcher.png" type="image/png">
 </head>
@@ -23,7 +21,7 @@
         </nav>
     </header>
     <main id="inicio">
-        <form id="denunciaForm">
+        <form id="denunciaForm" enctype="multipart/form-data">
             <label for="mensagem">Mensagem:</label>
             <textarea id="mensagem" name="mensagem" required></textarea>
 
@@ -41,6 +39,9 @@
 
             <label for="estado">Estado:</label>
             <input type="text" id="estado" name="estado" required>
+
+            <label for="bairro">Bairro:</label>
+            <input type="text" id="bairro" name="bairro" required>
 
             <button id="startRecording" type="button">Iniciar Gravação</button>
             <button id="stopRecording" type="button" disabled>Parar Gravação</button>
@@ -64,10 +65,39 @@
                 navigator.serviceWorker.register('/service-worker.js').then(registration => {
                     console.log('Service Worker registrado com sucesso:', registration);
                 }).catch(error => {
-                    console.log('Falha ao registrar o Service Worker:', error);
+                    console.error('Erro ao registrar Service Worker:', error);
                 });
             });
         }
+
+        // Event listener para o formulário de denúncia
+        document.getElementById('denunciaForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const formData = new FormData();
+            formData.append('mensagem', document.getElementById('mensagem').value);
+            formData.append('cep', document.getElementById('cep').value);
+            formData.append('rua', document.getElementById('rua').value);
+            formData.append('numero', document.getElementById('numero').value);
+            formData.append('cidade', document.getElementById('cidade').value);
+            formData.append('estado', document.getElementById('estado').value);
+            formData.append('bairro', document.getElementById('bairro').value);
+            formData.append('arquivo', document.getElementById('arquivo').files[0]);
+
+            try {
+                const response = await fetch('/api/denuncia', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                alert(result.message);
+                window.location.href = 'perfil.html';
+            } catch (error) {
+                console.error('Erro ao enviar denúncia:', error);
+                alert('Erro ao enviar denúncia!');
+            }
+        });
     </script>
 </body>
 </html>
