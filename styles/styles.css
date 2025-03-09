@@ -1,0 +1,282 @@
+/* Importando fontes modernas */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@500;700&display=swap');
+
+:root {
+    --primary-color: #0000FF;
+    --secondary-color: #333;
+    --light-gray: #f4f4f4;
+    --dark-gray: #666;
+    --white: #fff;
+}
+
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    background-color: var(--light-gray);
+    color: var(--secondary-color);
+    overflow-x: hidden; /* Evitar rolagem horizontal */
+}
+
+/* HEADER */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--secondary-color);
+    color: var(--white);
+    padding: 15px 20px;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header .logo {
+    font-size: 2em;
+    font-weight: bold;
+    flex-shrink: 0; /* Garante que o logo não desapareça */
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    flex-grow: 1; /* Permite que a lista cresça para ocupar o espaço disponível */
+    justify-content: center; /* Centraliza os itens na barra de navegação */
+}
+
+header nav ul li {
+    display: inline;
+}
+
+header nav ul li a {
+    color: var(--white);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 12px;
+    transition: 0.3s ease-in-out;
+}
+
+header nav ul li a:hover {
+    background: var(--primary-color);
+    border-radius: 5px;
+}
+
+/* MAIN */
+main {
+    padding: 150px 20px 20px; /* Aumente o padding superior para evitar sobreposição com a barra fixa */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* FORMULÁRIOS */
+form {
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 400px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+form label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+}
+
+form input, form textarea, form button {
+    padding: 12px;
+    font-size: 1em;
+    border: 1px solid var(--dark-gray);
+    border-radius: 6px;
+    width: 100%;
+}
+
+form textarea {
+    resize: none;
+    height: 100px;
+}
+
+form button {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-weight: bold;
+}
+
+form button:hover {
+    background-color: #0000FF;
+}
+
+/* MAPA RESPONSIVO */
+.map-responsive {
+    overflow: hidden;
+    padding-bottom: 56.25%;
+    position: relative;
+    height: 0;
+}
+
+.map-responsive iframe {
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+}
+
+/* BOTÃO MODERNO */
+button {
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+/* RESPONSIVIDADE */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    header nav ul {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        /* Centraliza os itens na barra de navegação em dispositivos móveis */
+    }
+
+    nav ul li {
+        display: block;
+        width: 100%;
+    }
+
+    header nav ul li a {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+
+    main {
+        padding: 200px 10px 10px; /* Aumente o padding superior para afastar o conteúdo da barra fixa */
+    }
+
+    form {
+        padding: 15px;
+    }
+
+    form label {
+        width: 100%; /* Largura total para rótulos em telas menores */
+        text-align: left; /* Alinhar à esquerda */
+        margin-right: 0; /* Remover margem direita */
+    }
+
+    form input, form textarea, form button {
+        width: 100%; /* Largura total para campos em telas menores */
+    }
+}
+
+/* Link de recuperação de senha */
+.recuperar-senha-link {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 10px;
+    display: block;
+    text-align: center;
+}
+
+.recuperar-senha-link:hover {
+    text-decoration: underline;
+}
+
+/* Perfilde usúario */
+
+.denuncia-bloco {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+#logoutButton {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #f44336; /* Cor do botão */
+    color: white; /* Cor do texto */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#logoutButton:hover {
+    background-color: #d32f2f; /* Cor do botão ao passar o mouse */
+}
+
+.card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 10px 0;
+    background-color: #f9f9f9;
+    position: relative;
+}
+
+.card h2 {
+    margin-top: 0;
+}
+
+.deleteButton {
+    background: none;
+    border: none;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.deleteButton img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%; /* Torna a imagem redonda */
+    
+}
+
+#logoutButton {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#logoutButton:hover {
+    background-color: #d32f2f;
+}
