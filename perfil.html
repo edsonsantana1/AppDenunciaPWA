@@ -75,25 +75,6 @@
             });
         }
 
-        // Função para deletar uma denúncia
-        function deletarDenuncia(id) {
-            fetch(`http://localhost:3000/api/denuncia/${id}`, {
-                method: 'DELETE',
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Denúncia excluída com sucesso!');
-                    obterDenuncias().then(exibirDenuncias); // Atualiza a lista de denúncias
-                } else {
-                    alert('Erro ao excluir a denúncia.');
-                }
-            })
-            .catch(error => {
-                console.error('Erro ao excluir denúncia:', error);
-                alert('Erro ao excluir a denúncia.');
-            });
-        }
 
         // Função para fazer logout
         document.getElementById('logoutButton').addEventListener('click', function() {
